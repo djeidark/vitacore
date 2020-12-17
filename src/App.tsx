@@ -50,8 +50,9 @@ function App(this: any) {
             .then(
                 rjson => {
                   let rows: rowsType = []
+                  let selectItem:string={selectedItem}.selectedItem!;
                   for (const [key] of Object.entries(rjson?.dates)) {
-                    const d = rjson?.dates[key]?.countries[{selectedItem}];
+                    const d = rjson?.dates[key]?.countries[JSON.parse(selectItem)];
                     const row = {
                       date: d.date,
                       today_new_confirmed: d.today_new_confirmed,
@@ -71,7 +72,7 @@ function App(this: any) {
 
     const [countryData, setCountryData] = React.useState<CountryType>([]) //откуда график будет забирать данные
 
-    const selectedItem={selectedItem: ""};
+    const [selectedItem, setSelectedData]= React.useState<string>();
 
     const fetchCountryData = () => {
       console.log("страны: ");
@@ -99,10 +100,14 @@ function App(this: any) {
   return (
     <div className="App">
 
-    <Select placeholder="Search to Select" style={{ width: 120 }}  onFocus={fetchCountryData} onChange={value => {
-                this.setState({ selectedItem: value });
-              }}>
-        {countryData.map(country => (
+    <Select placeholder="Выберите страну" style={{ width: 120 }}  
+      onFocus={fetchCountryData} 
+      value={selectedItem}
+      onChange={(value) => {
+        alert(value)
+      }}
+      >
+      {countryData.map(country => (
           <Option value={country.name}>{country.name}</Option>
         ))}
       </Select>
