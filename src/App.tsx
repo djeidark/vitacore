@@ -51,6 +51,8 @@ function App(this: any) {
                 rjson => {
                   let rows: rowsType = []
                   let selectItem:string={selectedItem}.selectedItem!;
+                  console.log(selectedItem);
+                  console.log(selectItem);
                   for (const [key] of Object.entries(rjson?.dates)) {
                     const d = rjson?.dates[key]?.countries[JSON.parse(selectItem)];
                     const row = {
@@ -96,16 +98,18 @@ function App(this: any) {
         )
       }
 
+      function handleChange(value:string) {
+        console.log(value); 
+        setSelectedData(value);
+      }
+
 
   return (
     <div className="App">
 
     <Select placeholder="Выберите страну" style={{ width: 120 }}  
       onFocus={fetchCountryData} 
-      value={selectedItem}
-      onChange={(value) => {
-        alert(value)
-      }}
+      onChange={handleChange}
       >
       {countryData.map(country => (
           <Option value={country.name}>{country.name}</Option>
@@ -116,7 +120,7 @@ function App(this: any) {
 
         <RangePicker onChange={(_: any, s: rangeType) => setRange(s)}  disabledDate={disabledDate} locale={locale}  />  
         
-        <Button type="primary" disabled={range[0] === "" || range[1] === "" } onClick={fetchData}>Построить график</Button>
+        <Button type="primary" disabled={range[0] === "" || range[1] === "" || selectedItem===""} onClick={fetchData}>Построить график</Button>
 
     </Space>
 
